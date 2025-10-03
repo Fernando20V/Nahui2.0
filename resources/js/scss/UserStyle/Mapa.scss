@@ -1,0 +1,275 @@
+
+.mapa-interactivo {
+  --bg: #fffaf2;
+  --primary: #d97d48;
+  --dark: #333;
+  --muted: #8f8f8f;
+  --card: #ffffff;
+  --border: #e9e5e5;
+
+  background: var(--bg);
+  padding: 1.5rem;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--dark);
+
+  /* Top row: título + buscador */
+  .top-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .titulo {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 0;
+  }
+
+  .subtitulo {
+    color: var(--dark);
+    font-size: 0.95rem;
+    margin-left: 0.25rem;
+  }
+
+  /* Buscador (solo dentro del componente) */
+  .health-search {
+    margin-left: auto;
+    position: relative;
+    width: 100%;
+
+    .search-input {
+      max-width: calc(100vw - 160px);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-size: 0.95rem;
+      box-shadow: none;
+
+      outline: none;
+    }
+
+    .results-list {
+      position: absolute;
+      right: 0;
+      top: 46px;
+      width: 320px;
+      max-width: calc(100vw - 160px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+      z-index: 30;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+
+      .result-item {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        font-size: 0.92rem;
+      }
+
+      .result-item:last-child { border-bottom: none; }
+      .result-item:hover { background: #fbfaf9; }
+    }
+
+    .no-results {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  }
+
+  /* Layout principal: tarjetas a la izquierda, mapa a la derecha */
+  .map-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* Contenedor de tarjetas y filtros */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    height: 80dvh;
+    padding: 1rem;
+    border-radius: .8rem;
+    box-shadow: 0px 2px 3px #6b6a6a;
+    gap: 1rem;
+  }
+
+  /* Filtros como botones (scopeados) */
+  .filters {
+    display: flex;
+
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.55rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, color 0.12s, border-color 0.12s;
+    color: var(--dark);
+  }
+
+  .filter-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
+
+  .filter-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 6px 18px rgba(217,125,72,0.18);
+  }
+
+  /* Lista de tarjetas */
+  .cards-list {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    overflow-y: auto;
+
+}
+
+.card {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 1px 2px 3px #6b6a6a;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+
+  .card-img {
+    width: 92px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: linear-gradient(90deg,#f1f1f1,#fafafa);
+  }
+
+  .card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 0.98rem;
+    margin: 0;
+  }
+
+  .card-stars {
+    font-size: 0.85rem;
+    color: #caa43f; /* estrellas doradas neutras */
+  }
+
+  .card-desc {
+    font-size: 0.88rem;
+    color: var(--dark);
+  }
+
+  .card-status {
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .card-status.open { color: #219653; }
+  .card-status.closed { color: #d64545; }
+
+  /* Estilo del mapa (solo dentro del contenedor scopeado) */
+  #map {
+    width: 100%;
+    height: 80dvh;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  }
+
+  /* Popup images dentro de leaflet (solo aquí) */
+  .mapa-interactivo .leaflet-popup-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    display:block;
+    margin-top: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .map-layout { grid-template-columns: 1fr; }
+    .health-search { margin-left: 0; }
+    .health-search .results-list { left: 0; right: auto; width: calc(100% - 2rem); }
+    #map { height: 420px; }
+  }
+}
+
+
+// DURACION DE LLEGADA
+
+.mapa-interactivo {
+  .route-summary {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px 20px;
+    margin:  auto;
+    width: fit-content;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+    font-size: 15px;
+    color: #333;
+    animation: fadeIn 0.3s ease-in-out;
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      i {
+        font-size: 18px;
+        color: var(--primary);
+      }
+
+      span {
+        strong {
+          font-size: 16px;
+          color: #111;
+        }
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

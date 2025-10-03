@@ -1,0 +1,123 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: #fdfbf6;
+
+  .background {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+
+    .img_login {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .login-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 4rem;
+    background: #fffdf9;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: left;
+      color: #2d2d2d;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      input {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        background: #fff;
+        outline: none;
+        transition: 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        &:focus {
+          border-color: #d4915d;
+          box-shadow: 0 4px 10px rgba(212, 145, 93, 0.2);
+        }
+      }
+
+      &.password {
+        position: relative;
+
+        .eye-icon {
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #888;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+
+      .btn {
+        flex: 1;
+        padding: 0.9rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+
+        &.primary {
+          background: #d4915d;
+          color: #fff;
+          border: none;
+
+          &:hover {
+            background: #b97340;
+          }
+        }
+
+        &.secondary {
+          border: 1px solid #d4915d;
+          color: #d4915d;
+          background: transparent;
+
+          &:hover {
+            background: #fff2e9;
+          }
+        }
+      }
+    }
+
+    .forgot {
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #d4915d;
+      }
+    }
+  }
+}

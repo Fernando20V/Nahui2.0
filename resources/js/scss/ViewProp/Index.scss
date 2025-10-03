@@ -1,0 +1,157 @@
+/* Importar variables SCSS */
+@import '../variables.scss';
+
+/* Contenedor principal */
+.places-container {
+  background-color: $color-fondo;
+  min-height: 100vh;
+  padding: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    color: $color-secundario;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  .flash-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+
+    &.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    &.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+  }
+}
+
+/* Tabla */
+.places-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  thead {
+    background-color: $color-primario;
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+
+    th {
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #e5e7eb;
+      transition: background 0.2s;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+
+      td {
+        padding: 0.75rem 1rem;
+        color: $color-texto;
+        vertical-align: middle;
+
+        .badge {
+          display: inline-block;
+          padding: 0.25rem 0.5rem;
+          border-radius: 9999px;
+          font-size: 0.75rem;
+          font-weight: 600;
+
+          &.public { background-color: #d1fae5; color: #065f46; }
+          &.private { background-color: #fee2e2; color: #991b1b; }
+        }
+
+        .action-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 0.5rem;
+
+          a, button {
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+
+            &.view {
+              background-color: $color-primario;
+              color: #fff;
+              &:hover { background-color: darken($color-primario, 10%); }
+            }
+
+            &.edit {
+              background-color: $color-boton-edit;
+              color: #fff;
+              &:hover { background-color: darken($color-boton-edit, 10%); }
+            }
+
+            &.delete {
+              background-color: $color-boton-delete;
+              color: #fff;
+              &:hover { background-color: darken($color-boton-delete, 10%); }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Paginación */
+.places-pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+
+    li {
+      a, span {
+        display: inline-block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        background-color: #fff;
+        border: 1px solid #d1d5db;
+        color: $color-texto;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: $color-primario;
+          color: #fff;
+          border-color: $color-primario;
+        }
+      }
+
+      &.active span {
+        background-color: $color-primario;
+        color: #fff;
+        border-color: $color-primario;
+      }
+    }
+  }
+}
