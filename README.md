@@ -27,7 +27,7 @@ Antes de comenzar a utilizar esta plantilla, asegúrate de tener instalado:
 1. Clona este repositorio en tu máquina local:
 
     ```bash
-    git clone https://github.com/giligan0/nahui.git
+    git clone https://github.com/Fernando20V/Nahui2.0.git
     ```
 
 2. Navega a la carpeta del proyecto:
