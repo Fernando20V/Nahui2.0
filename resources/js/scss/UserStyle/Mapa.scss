@@ -1,4 +1,3 @@
-
 .mapa-interactivo {
   --bg: #fffaf2;
   --primary: #d97d48;
@@ -34,7 +33,7 @@
     margin-left: 0.25rem;
   }
 
-  /* Buscador (solo dentro del componente) */
+  /* Buscador */
   .health-search {
     margin-left: auto;
     position: relative;
@@ -48,7 +47,6 @@
       background: var(--card);
       font-size: 0.95rem;
       box-shadow: none;
-
       outline: none;
     }
 
@@ -85,7 +83,7 @@
     }
   }
 
-  /* Layout principal: tarjetas a la izquierda, mapa a la derecha */
+  /* Layout principal */
   .map-layout {
     display: grid;
     grid-template-columns: 360px 1fr;
@@ -93,7 +91,7 @@
     align-items: start;
   }
 
-  /* Contenedor de tarjetas y filtros */
+  /* Panel lateral */
   .panel {
     display: flex;
     flex-direction: column;
@@ -104,18 +102,16 @@
     gap: 1rem;
   }
 
-  /* Filtros como botones (scopeados) */
   .filters {
     display: flex;
-
     gap: 0.6rem;
     flex-wrap: wrap;
   }
 
   .filter-btn {
-    padding: 0.55rem 0.9rem;
+    padding: 0.55rem 0.7rem;
     border-radius: 12px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--primary);
     background: var(--card);
     font-size: 0.95rem;
     cursor: pointer;
@@ -134,15 +130,13 @@
 
   /* Lista de tarjetas */
   .cards-list {
-    background: transparent;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
     overflow-y: auto;
+  }
 
-}
-
-.card {
+  .card {
     display: flex;
     gap: 0.8rem;
     align-items: flex-start;
@@ -181,7 +175,7 @@
 
   .card-stars {
     font-size: 0.85rem;
-    color: #caa43f; /* estrellas doradas neutras */
+    color: #caa43f;
   }
 
   .card-desc {
@@ -196,7 +190,7 @@
   .card-status.open { color: #219653; }
   .card-status.closed { color: #d64545; }
 
-  /* Estilo del mapa (solo dentro del contenedor scopeado) */
+  /* Mapa */
   #map {
     width: 100%;
     height: 80dvh;
@@ -206,8 +200,7 @@
     box-shadow: 0 6px 18px rgba(0,0,0,0.04);
   }
 
-  /* Popup images dentro de leaflet (solo aquí) */
-  .mapa-interactivo .leaflet-popup-content img {
+  .leaflet-popup-content img {
     max-width: 100%;
     height: auto;
     border-radius: 6px;
@@ -215,19 +208,7 @@
     margin-top: 8px;
   }
 
-  /* Responsive */
-  @media (max-width: 980px) {
-    .map-layout { grid-template-columns: 1fr; }
-    .health-search { margin-left: 0; }
-    .health-search .results-list { left: 0; right: auto; width: calc(100% - 2rem); }
-    #map { height: 420px; }
-  }
-}
-
-
-// DURACION DE LLEGADA
-
-.mapa-interactivo {
+  /* Resumen de ruta */
   .route-summary {
     display: flex;
     justify-content: center;
@@ -248,28 +229,82 @@
       align-items: center;
       gap: 8px;
 
-      i {
-        font-size: 18px;
-        color: var(--primary);
-      }
+      i { font-size: 18px; color: var(--primary); }
 
       span {
-        strong {
-          font-size: 16px;
-          color: #111;
-        }
+        strong { font-size: 16px; color: #111; }
       }
     }
   }
 
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-5px);
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 🔹 Modal de lugar */
+  .place-modal {
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    width: 320px;
+    max-width: 90vw;
+    z-index: 999;
+    animation: fadeIn 0.2s ease-in-out;
+
+    .modal-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    .modal-close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      text-align: center;
+      color: var(--dark);
     }
   }
+
+  @media (max-width: 980px) {
+    .map-layout { grid-template-columns: 1fr; }
+    .health-search { margin-left: 0; }
+    .health-search .results-list { left: 0; right: auto; width: calc(100% - 2rem); }
+    #map { height: 420px; }
+    .place-modal { width: 90vw; }
+  }
+}
+.leaflet-div-icon {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }

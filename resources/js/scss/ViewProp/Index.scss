@@ -9,7 +9,7 @@
 
   h1 {
     font-size: 2.5rem;
-    color: $color-secundario;
+    color: $color-primario;
     margin-bottom: 1.5rem;
     font-weight: 700;
   }
@@ -33,23 +33,49 @@
   }
 }
 
+/* --- TABLA RESPONSIVA --- */
+.table-wrapper {
+  max-height: 70vh; /* altura máxima con scroll vertical */
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Scroll suave */
+  scroll-behavior: smooth;
+
+  /* Scroll personalizado */
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-primario;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #f3f4f6;
+  }
+}
+
 /* Tabla */
 .places-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  min-width: 700px; /* asegura ancho mínimo para scroll horizontal */
 
   thead {
     background-color: $color-primario;
     color: #fff;
     font-weight: 600;
     text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 
     th {
       padding: 0.75rem 1rem;
+      white-space: nowrap;
     }
   }
 
@@ -66,6 +92,7 @@
         padding: 0.75rem 1rem;
         color: $color-texto;
         vertical-align: middle;
+        white-space: nowrap;
 
         .badge {
           display: inline-block;
@@ -74,16 +101,17 @@
           font-size: 0.75rem;
           font-weight: 600;
 
-          &.public { background-color: #d1fae5; color: #065f46; }
-          &.private { background-color: #fee2e2; color: #991b1b; }
-        }
+          &.public {
+            background-color: #d1fae5;
+            color: #065f46;
+          }
+          &.private {
+            background-color: #fee2e2;
+            color: #991b1b;
+          }
 
-        .action-buttons {
-          display: flex;
-          justify-content: center;
-          gap: 0.5rem;
-
-          a, button {
+          a,
+          button {
             padding: 0.4rem 0.8rem;
             border-radius: 0.375rem;
             font-size: 0.875rem;
@@ -96,19 +124,17 @@
             &.view {
               background-color: $color-primario;
               color: #fff;
-              &:hover { background-color: darken($color-primario, 10%); }
+              &:hover {
+                background-color: darken($color-primario, 10%);
+              }
             }
 
             &.edit {
               background-color: $color-boton-edit;
               color: #fff;
-              &:hover { background-color: darken($color-boton-edit, 10%); }
-            }
-
-            &.delete {
-              background-color: $color-boton-delete;
-              color: #fff;
-              &:hover { background-color: darken($color-boton-delete, 10%); }
+              &:hover {
+                background-color: darken($color-boton-edit, 10%);
+              }
             }
           }
         }
@@ -117,7 +143,21 @@
   }
 }
 
-/* Paginación */
+/* --- SCROLL HORIZONTAL RESPONSIVO --- */
+@media screen and (max-width: 1116px) {
+  .table-wrapper {
+    overflow-x: auto;
+    // overflow-y: hidden;
+  }
+
+  .places-table {
+    display: block;
+    width: max-content;
+    min-width: 800px;
+  }
+}
+
+/* --- Paginación --- */
 .places-pagination {
   margin-top: 1.5rem;
   display: flex;
@@ -129,7 +169,8 @@
     gap: 0.5rem;
 
     li {
-      a, span {
+      a,
+      span {
         display: inline-block;
         padding: 0.5rem 0.75rem;
         border-radius: 0.375rem;
@@ -154,4 +195,58 @@
       }
     }
   }
+}
+
+/* --- Íconos --- */
+.fa-pen-to-square {
+  color: var(--color_primario);
+}
+.fa-eye {
+  color: #30a501b6;
+}
+.fa-trash {
+  color: #991b1b;
+}
+.icon-btn {
+  background-color: transparent;
+  border: 0.125rem solid var(--color_primario);
+  color: var(--color_primario);
+  padding: 0.5rem;
+  text-decoration: none;
+  border-radius: 0.4rem;
+}
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem;
+}
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+  a {
+    text-decoration: none;
+    color: var(--color_primario);
+    font-size: 1.5rem;
+    border: 0.125rem solid var(--color_primario);
+    border-radius: 0.4rem;
+    padding: 0.6rem 1.8rem;
+    font-weight: 700;
+  }
+}
+.acciones_show {
+  justify-content: end;
+  align-items: center;
+  gap: 2rem;
+  margin-right: 3rem;
+  padding: 2rem;
+}
+.descripcion {
+  width: 20rem;
+}
+.head{
+    background-color: #065f46;
+        box-shadow: 0 4px 6px rgba(0,0,0,.5);
 }

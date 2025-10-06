@@ -1,10 +1,14 @@
 @extends('app')
 
 @section('content')
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6">Detalles del Lugar</h1>
 
     <div class="publicar-container">
+            <!-- Volver -->
+    <a href="{{ route('places.index') }}" class="icon-btn btn-back" title="Volver">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+    </a>
+
+        <h1 class="place_title">Detalles del Lugar</h1>
         <!-- Información básica -->
         <div class="section">
             <h3 class="sub_title tittle">Información básica</h3>
@@ -65,35 +69,69 @@
         </div>
 
 <!-- Imágenes -->
-<div>
+<div class="section">
     <h2 class="sub_title tittle">Imágenes</h2>
-    @if(!empty($imagenes))
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            @foreach($imagenes as $img)
-                <img src="{{ Storage::url($img) }}"
-                     alt="Imagen de {{ $place->name }}"
-                     class="rounded-lg shadow">
-            @endforeach
+
+    @if(!empty($imagenes) && count($imagenes) > 0)
+        <div class="carousel" id="show-carousel">
+            <div class="carousel-track" id="show-carousel-track">
+                @foreach($imagenes as $img)
+                    <div class="carousel-item">
+                        <img src="{{ Storage::url($img) }}"
+                             alt="Imagen de {{ $place->name }}"
+                             class="rounded-lg shadow w-full h-64 object-cover">
+                    </div>
+                @endforeach
+            </div>
+            <button type="button" class="prev" id="show-prev">&#10094;</button>
+            <button type="button" class="next" id="show-next">&#10095;</button>
         </div>
     @else
         <p>No hay imágenes disponibles</p>
     @endif
 </div>
 
+
+
     </div>
 
-    <!-- Botones de acción -->
-    <div class="mt-6 flex space-x-3">
-        <a href="{{ route('places.index') }}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Volver</a>
-        <a href="{{ route('places.edit', $place->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Editar</a>
-        <form action="{{ route('places.destroy', $place->id) }}" method="POST" class="inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" onclick="return confirm('¿Deseas eliminar este lugar?')"
-                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                Eliminar
-            </button>
-        </form>
-    </div>
+<div class="action-buttons acciones_show">
+    <!-- Editar -->
+    <a href="{{ route('places.edit', $place->id) }}" class="icon-btn btn-edit" title="Editar">
+        <i class="fa-solid fa-pen-to-square"></i> Editar
+    </a>
+
+
+<x-boton-eliminar :id="$place->id" />
+
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const track = document.getElementById("show-carousel-track");
+    const items = track ? track.querySelectorAll(".carousel-item") : [];
+    const prevBtn = document.getElementById("show-prev");
+    const nextBtn = document.getElementById("show-next");
+    let currentIndex = 0;
+
+    if(items.length > 0){
+        function updateCarousel(){
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        nextBtn.addEventListener("click", () => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener("click", () => {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        });
+
+        updateCarousel();
+    }
+});
+</script>
+
 @endsection

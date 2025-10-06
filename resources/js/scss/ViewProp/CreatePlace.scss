@@ -1,5 +1,6 @@
 .publicar-container {
-  padding: 2rem;
+  padding: 3rem;
+  position: relative;
   background: #faf8f0;
   font-family: sans-serif;
 }
@@ -84,6 +85,10 @@ select {
   cursor: pointer;
     border-radius: .5rem;
     border: .125rem solid var(--color_secundario);
+    background-color: transparent;
+}
+.tittlpubli{
+    color: var(--color_primario);
 }
 .btn:nth-child(1){
     color: var(--color_primario);
@@ -175,4 +180,85 @@ select {
 }
 .con_check{
     display: flex;
+}
+.btn-back{
+    position: absolute;
+    right: 3rem;
+    top: 4.8rem;
+}
+
+.btn-delete{
+    cursor: pointer;
+}
+
+.ubicacion{
+    width: 97%;
+}
+
+// modal eliminar
+.modal-delete {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+
+  &.hidden {
+    display: none;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    width: 24rem;
+    max-width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+
+      .cancel {
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        background: #e5e5e5;
+        &:hover { background: #d4d4d4; }
+      }
+
+      .confirm {
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        background: #dc2626;
+        color: #fff;
+        &:hover { background: #b91c1c; }
+      }
+    }
+  }
+}
+
+.coordenadas{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+}
+.coordenadas{
+    .mapa{
+        grid-column: span 2;
+    }
 }

@@ -5,22 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="font-sans antialiased">
+    <!-- Vite CSS y JS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Header con roles --}}
+    <!-- Leaflet CSS (Mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <style>
+        /* Aislar estilos de Font Awesome del mapa */
+        #map-container .fa,
+        #map-container .icon {
+            all: unset;
+        }
+    </style>
+</head>
+<body class="body">
+
     @include('layouts.header')
+    {{-- Header --}}
 
     {{-- Contenido principal --}}
-    <main class="container mx-auto mt-4">
+    <main class="main">
         @yield('content')
     </main>
-{{-- <div id="app" data-page="{{ json_encode($page) }}"></div> --}}
 
+    @include('partials.alerts')
 
-    {{-- alertas --}}
-        @include('partials.alerts')
+    {{-- Scripts adicionales --}}
+    @yield('scripts')
+    @stack('scripts')
 
 </body>
 </html>

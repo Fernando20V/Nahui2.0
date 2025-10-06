@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="places-container">
-    <h1>Lugares Registrados</h1>
+    <div class="header-bar">
+        <h1>Lugares registrados</h1>
+   <a href="{{ route('places.create') }}" class="btn-create" title="Crear nuevo lugar">
+        <i class="fa-solid fa-plus"></i> Crear lugar
+    </a>    </div>
 
     @if(session('success'))
         <div class="flash-message success">
@@ -10,13 +14,13 @@
         </div>
     @endif
 
-    <div class="places-table">
-        <table>
+    <div class="table-wrapper">
+        <table class="places-table">
             <thead>
-                <tr>
+                <tr class="head">
                     <th>Nombre</th>
                     <th>Categoría</th>
-                    <th>Ubicación</th>
+                    <th>Descripción</th>
                     <th class="text-center">Estado</th>
                     <th class="text-center">Acciones</th>
                 </tr>
@@ -26,7 +30,7 @@
                 <tr>
                     <td>{{ $place->name }}</td>
                     <td>{{ $place->placeCategory->name ?? '—' }}</td>
-                    <td>{{ $place->address->full_address ?? '—' }}</td>
+                    <td class="descripcion">{{ $place->description }}</td>
                     <td class="text-center">
                         @if($place->is_public)
                             <span class="badge public">Público</span>
@@ -34,16 +38,17 @@
                             <span class="badge private">Privado</span>
                         @endif
                     </td>
-                    <td class="action-buttons">
-                        <a href="{{ route('places.show', $place->id) }}" class="view">Ver</a>
-                        <a href="{{ route('places.edit', $place->id) }}" class="edit">Editar</a>
-                        <form action="{{ route('places.destroy', $place->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="delete"
-                                onclick="return confirm('¿Deseas eliminar este lugar?')">Eliminar</button>
-                        </form>
-                    </td>
+<td class="action-buttons">
+    <a href="{{ route('places.show', $place->id) }}" class="icon-btn view" title="Ver">
+        Ver <i class="fa-solid fa-eye"></i>
+    </a>
+    <a href="{{ route('places.edit', $place->id) }}" class="icon-btn edit" title="Editar">
+       Editar <i class="fa-solid fa-pen-to-square"></i>
+    </a>
+<x-boton-eliminar :id="$place->id" />
+
+</td>
+
                 </tr>
                 @empty
                 <tr>
@@ -54,8 +59,9 @@
         </table>
     </div>
 
-    <div class="places-pagination">
-        {{ $places->links('pagination::tailwind') }}
-    </div>
+<div class="places-pagination">
+    {{ $places->links('vendor.pagination.places') }}
+</div>
+
 </div>
 @endsection

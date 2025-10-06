@@ -1,11 +1,6 @@
-{{-- Modal global para mensajes --}}
+{{-- Modal global --}}
 <div id="modal-alert" style="display:none;">
-    <div class="modal-backdrop"></div>
-    <div class="modal-box">
-        <div class="modal-icon" id="modal-icon">⚠️</div>
-        <div class="modal-message" id="modal-message">Mensaje de validación</div>
-        <button class="modal-close" id="modal-close">&times;</button>
-    </div>
+  ...
 </div>
 
 <script>
@@ -14,7 +9,6 @@ function showModal(type, message) {
     const icon = document.getElementById('modal-icon');
     const msg = document.getElementById('modal-message');
 
-    // Ícono según tipo
     if(type === 'success') icon.textContent = '✔️';
     else if(type === 'warning') icon.textContent = '⚠️';
     else icon.textContent = '❌';
@@ -23,25 +17,31 @@ function showModal(type, message) {
     modal.style.display = 'flex';
 }
 
-// Cerrar modal
 document.getElementById('modal-close').addEventListener('click', () => {
     document.getElementById('modal-alert').style.display = 'none';
 });
+</script>
 
-// Mostrar errores de Laravel
-@foreach ($errors->all() as $error)
-    showModal('error', '{{ $error }}');
-@endforeach
+@if($errors->any())
+<script>
+    @foreach ($errors->all() as $error)
+        showModal('error', {!! json_encode($error) !!});
+    @endforeach
+</script>
+@endif
 
-// Mensajes de sesión (success o deleted)
 @if (session('success'))
-    showModal('success', '{{ session('success') }}');
+<script>
+    showModal('success', {!! json_encode(session('success')) !!});
+</script>
 @endif
 
 @if (session('deleted'))
-    showModal('warning', '{{ session('deleted') }}');
-@endif
+<script>
+    showModal('warning', {!! json_encode(session('deleted')) !!});
 </script>
+@endif
+
 
 <style>
 #modal-alert {
