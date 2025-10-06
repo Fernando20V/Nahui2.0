@@ -15,7 +15,10 @@ return new class extends Migration
             $table->foreignId('place_category_id')->nullable()
                 ->constrained('place_categories')->nullOnDelete();
             $table->json('imagenes')->nullable();
-            $table->string('coordenadas')->nullable();
+            // $table->string('coordenadas')->nullable();
+$table->decimal('latitude', 17, 14)->nullable();
+$table->decimal('longitude', 17, 14)->nullable();
+
             $table->text('description')->nullable();
 
             $table->string('servicios')->nullable();

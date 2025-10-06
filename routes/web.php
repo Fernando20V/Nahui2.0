@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,13 +14,22 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('home');
 
 
+Route::get('/mapa', function () {
+    return view('mapa');
+})->middleware(['auth', 'verified'])->name('mapa');
+
+
+Route::get('/catalogo', [App\Http\Controllers\PlaceController::class, 'catalog'])
+    ->name('places.catalog');
 
 
 // rutas crud
 
 Route::middleware('auth')->group(function () {
-
-
+    
+// routes/web.php
+Route::get('/mapa', [PlaceController::class, 'mapa'])->name('mapa');
+    Route::get('/mapa', [MapController::class, 'index'])->name('mapa.index');
     Route::resource('/interests',\App\Http\Controllers\InterestController::class);
     Route::resource('/interest_users',\App\Http\Controllers\InterestUserController::class);
     Route::resource('/departments',\App\Http\Controllers\DepartmentController::class);
@@ -53,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/route_schedules',\App\Http\Controllers\RouteScheduleController::class);
     Route::resource('/booking_days',\App\Http\Controllers\BookingDayController::class);
 
+    // RUTA DE CATALOGO DE LUGARES POR CATEGORIA
 
 
 });
@@ -65,4 +77,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
