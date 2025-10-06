@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Place extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $perPage = 20;
 
@@ -36,7 +37,9 @@ class Place extends Model
         'accessibility_notes',
         'entrance_fee',
         'currency',
-        'imagenes'
+        'imagenes',
+        'latitude',
+        'longitude'
     ];
 
     // Relaciones

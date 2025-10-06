@@ -34,6 +34,10 @@ class PlaceRequest extends FormRequest
             'is_public' => 'nullable|boolean',
             'is_managed' => 'nullable|boolean',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120', // max 5MB por imagen
+
+            // 🔹 Campos nuevos para coordenadas
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'latitude'  => 'nullable|numeric|between:-90,90',
         ];
     }
 
@@ -59,6 +63,12 @@ class PlaceRequest extends FormRequest
             // coordenadas
             'coordenadas.string' => 'Las coordenadas deben ser texto.',
             'coordenadas.max' => 'Las coordenadas no pueden superar los 255 caracteres.',
+
+            // 🔹 Mensajes para longitude y latitude
+            'longitude.numeric' => 'La longitud debe ser un valor numérico.',
+            'longitude.between' => 'La longitud debe estar entre -180 y 180.',
+            'latitude.numeric'  => 'La latitud debe ser un valor numérico.',
+            'latitude.between'  => 'La latitud debe estar entre -90 y 90.',
 
             // servicios
             'servicios.string' => 'Los servicios deben ser texto.',
