@@ -50,7 +50,8 @@ class Accommodation extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['organization_id', 'address_id', 'accommodation_type_id', 'title', 'description', 'size_sqm', 'floors', 'bedrooms', 'bathrooms', 'cats_allowed', 'dogs_allowed', 'base_price', 'currency', 'status', 'posted_at', 'view_count'];
+    // place_id is the canonical link to Place which stores title/name, address, description, coords
+    protected $fillable = ['place_id', 'organization_id', 'accommodation_type_id', 'size_sqm', 'floors', 'bedrooms', 'bathrooms', 'cats_allowed', 'dogs_allowed', 'base_price', 'currency', 'status', 'posted_at', 'view_count'];
 
 
     /**
@@ -75,6 +76,11 @@ class Accommodation extends Model
     public function organization()
     {
         return $this->belongsTo(\App\Models\Organization::class, 'organization_id', 'id');
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(\App\Models\Place::class, 'place_id', 'id');
     }
     
     /**

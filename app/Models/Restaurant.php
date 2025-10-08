@@ -38,7 +38,8 @@ class Restaurant extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'restaurant_category_id', 'cuisine_types', 'description', 'price_band', 'hours', 'reservations_supported', 'address_id'];
+    // place_id is the canonical link to Place which stores name, address, description, hours, coords
+    protected $fillable = ['place_id', 'restaurant_category_id', 'cuisine_types', 'price_band', 'reservations_supported'];
 
 
     /**
@@ -47,6 +48,11 @@ class Restaurant extends Model
     public function address()
     {
         return $this->belongsTo(\App\Models\Address::class, 'address_id', 'id');
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(\App\Models\Place::class, 'place_id', 'id');
     }
     
     /**

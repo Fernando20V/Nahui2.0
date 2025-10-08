@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('restaurants', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            // canonical reference to Place (holds name, address, description, hours, coords)
+            $table->foreignId('place_id')->constrained('places')->cascadeOnDelete()->unique()->index();
             $table->foreignId('restaurant_category_id')->nullable()->constrained('restaurant_categories')->nullOnDelete();
             $table->json('cuisine_types')->nullable();
-            $table->text('description')->nullable();
             $table->string('price_band', 10)->nullable();
-            $table->json('hours')->nullable(); // JSON schema: {timezone, regular{mon..sun:[{open,close}]}, exceptions:[{date, open, close, closed?}]}
-            // $table->json('payment_methods')->nullable(); // tabla aparte
+            // $table->json('payment_methods')->nullable();
+            // boolean for card payments
             $table->boolean('reservations_supported')->default(false)->index();
-            $table->foreignId('address_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
             $table->index(['restaurant_category_id', 'reservations_supported']);

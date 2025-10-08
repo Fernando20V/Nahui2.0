@@ -16,16 +16,8 @@ return new class extends Migration
                 ->constrained('place_categories')->nullOnDelete();
             $table->json('imagenes')->nullable();
             // $table->string('coordenadas')->nullable();
-$table->decimal('latitude', 17, 14)->nullable();
-$table->decimal('longitude', 17, 14)->nullable();
 
             $table->text('description')->nullable();
-
-            $table->string('servicios')->nullable();
-            $table->unsignedInteger('habitaciones')->nullable();
-            $table->unsignedInteger('capacidad')->nullable();
-            $table->text('reglas')->nullable();
-            $table->string('promocion')->nullable();
 
             $table->foreignId('address_id')->nullable()
                 ->constrained()->nullOnDelete();
@@ -39,9 +31,7 @@ $table->decimal('longitude', 17, 14)->nullable();
             $table->json('hours')->nullable();
             $table->text('accessibility_notes')->nullable();
 
-            $table->decimal('entrance_fee', 10, 2)->nullable();
-            $table->char('currency', 3)->default('USD');
-
+            // entrance fee goes in the subtype tables with currency code iso 4217
             $table->timestamps();
             $table->softDeletes();
 
