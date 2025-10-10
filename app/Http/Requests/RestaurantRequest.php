@@ -26,7 +26,8 @@ class RestaurantRequest extends FormRequest
 			'description' => 'string',
 			'price_band' => 'string',
 			'reservations_supported' => 'required',
-			'address_id' => 'required',
+            'address_id' => 'nullable',
+            'place_id' => 'nullable|exists:places,id',
         ];
     }
 }

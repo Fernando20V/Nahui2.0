@@ -67,4 +67,14 @@ class Place extends Model
     {
         return $this->hasMany(Stop::class, 'place_id', 'id');
     }
+
+    public function restaurant()
+    {
+        return $this->hasOne(Restaurant::class, 'place_id', 'id');
+    }
+
+    public function accommodation()
+    {
+        return $this->hasOne(Accommodation::class, 'place_id', 'id');
+    }
 }

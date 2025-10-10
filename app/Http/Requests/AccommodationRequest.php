@@ -24,13 +24,14 @@ class AccommodationRequest extends FormRequest
         return [
 			'title' => 'required|string',
 			'description' => 'required|string',
-			'floors' => 'required',
-			'bedrooms' => 'required',
-			'bathrooms' => 'required',
-			'cats_allowed' => 'required',
-			'dogs_allowed' => 'required',
+            'floors' => 'required|integer|min:0',
+            'bedrooms' => 'required|integer|min:0',
+            'bathrooms' => 'required|integer|min:0',
+            'cats_allowed' => 'required|boolean',
+            'dogs_allowed' => 'required|boolean',
 			'status' => 'required|string',
-			'view_count' => 'required',
+            'view_count' => 'required|integer|min:0',
+            'place_id' => 'nullable|exists:places,id',
         ];
     }
 }

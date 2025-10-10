@@ -12,15 +12,30 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('car_rentals', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('rental_date');
+            $table->id();
+
+            // When the rental starts
+            $table->dateTime('rental_date');
+
+            // Where the car will be dropped off
             $table->string('dropoff_location');
-            $table->string('total_cost');
-            $table->string('status');
-            $table->string('payment_method');
-            $table->string('rental_duration');
+
+            $table->decimal('total_cost', 10, 2);
+
+            // Keep status flexible but constrained by application logic; index for filtering
+            $table->string('status', 32)->default('pending')->index();
+
+            // Payment method label (e.g., cash, card, transfer). Nullable until payment is chosen
+            $table->string('payment_method', 32)->nullable();
+
+            // Duration in hours (adjust in code if using different unit)
+            $table->unsignedInteger('rental_duration');
+
             $table->string('car_model');
-            $table->string('description');
+
+            // Longer free-text; optional
+            $table->text('description')->nullable();
+
             $table->timestamps();
         });
     }

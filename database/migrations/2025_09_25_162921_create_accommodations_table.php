@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('accommodations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('organization_id')->nullable()->constrained('organizations')->nullOnDelete();
-            $table->foreignId('address_id')->nullable()->constrained()->nullOnDelete();
+            // $table->foreignId('place_id')->constrained('places')->cascadeOnDelete()->unique()->index();
+            // no longer references Place (holds title/name, address, description, coords)
+            $table->string('title', 255)->index();
+            $table->foreignId('address_id')->nullable()->constrained('addresses')->nullOnDelete();
+            $table->text('description')->nullable();
             $table->foreignId('accommodation_type_id')->nullable()->constrained('accommodation_types')->nullOnDelete();
-            $table->string('title');
-            $table->text('description');
             $table->unsignedInteger('size_sqm')->nullable();
             $table->unsignedSmallInteger('floors')->default(1);
             $table->unsignedSmallInteger('bedrooms')->default(0);
