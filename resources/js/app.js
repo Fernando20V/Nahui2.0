@@ -8,7 +8,7 @@ import '../js/scss/UserStyle/Mapa.scss';
 import '../js/scss/UserStyle/location.scss';
 import '../js/scss/UserStyle/catalogo.scss';
 import '../js/scss/ViewProp/CreatePlace.scss';
-
+import '../js/scss/UserStyle/registro.scss';
 import '../js/scss/ViewProp/ShowPlaces.scss';
 import '../js/scss/ViewProp/Index.scss';
 import '../js/scss/Principal.scss';

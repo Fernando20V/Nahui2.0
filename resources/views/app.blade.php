@@ -36,7 +36,7 @@
         @yield('content')
     </main>
 
-    @include('partials.alerts')
+    {{-- @include('partials.alerts') --}}
 
     {{-- Scripts adicionales --}}
     @yield('scripts')

@@ -3,35 +3,72 @@
   background-color: #fffdf6;
   font-family: 'Poppins', sans-serif;
 
-  .buscador {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-    position: relative;
+//   buscador
+.buscador {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 2rem auto; // centrado horizontal
+  display: flex;
+  justify-content: center;
 
-    input {
-      width: 320px;
-      padding: 0.8rem 2.5rem 0.8rem 1rem;
-      border: 1.5px solid #d4af37;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+  input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.2rem; // espacio para el ícono
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s ease;
 
-      &:focus {
-        outline: none;
-        border-color: #c59d26;
-        box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
-      }
+    &::placeholder {
+      color: #999;
     }
 
-    i {
-      position: absolute;
-      right: calc(50% - 140px);
-      color: #c59d26;
+    &:focus {
+      outline: none;
+      border-color: #c59d26;
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    }
+  }
+
+  .icono-buscar {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d4af37;
+    font-size: 1.3rem;
+    pointer-events: none;
+  }
+
+  // ✅ RESPONSIVE
+  @media (max-width: 992px) {
+    max-width: 90%;
+  }
+
+  @media (max-width: 600px) {
+    max-width: 95%;
+
+    input {
+      font-size: 0.95rem;
+      padding: 0.9rem 2.5rem 0.9rem 1rem;
+    }
+
+    .icono-buscar {
+      right: 0.9rem;
       font-size: 1.1rem;
     }
   }
+
+  @media (max-width: 400px) {
+    input {
+      font-size: 0.85rem;
+      padding: 0.8rem 2.2rem 0.8rem 0.9rem;
+    }
+  }
+}
 
   .categoria-section {
     margin-bottom: 3rem;
@@ -46,64 +83,112 @@
       text-transform: capitalize;
     }
 
-    .tarjetas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
-
-    .tarjeta {
-      background: #fff;
-      border-radius: 14px;
+    /* ===== Carrusel ===== */
+    .carrusel-container {
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      cursor: pointer;
-      border: 1px solid #f3f3f3;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%); // difuminado lateral
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      .carrusel-track {
+        display: flex;
+        gap: 25px;
+        width: max-content;
+        animation: scroll-left 30s linear infinite;
       }
 
-      img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
+      &.reverse .carrusel-track {
+        animation: scroll-right 30s linear infinite;
       }
 
-      .tarjeta-info {
-        padding: 1rem;
+      &:hover .carrusel-track {
+        animation-play-state: paused;
+      }
 
-        h3 {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 0.4rem;
+      .tarjeta {
+        flex: 0 0 250px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        cursor: pointer;
+        border: 1px solid #f3f3f3;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
         }
 
-        p {
-          font-size: 0.9rem;
-          color: #666;
-          margin-bottom: 0.6rem;
-          line-height: 1.4;
+        img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
         }
 
-        .etiqueta {
-          display: inline-block;
-          padding: 0.35rem 0.8rem;
-          border-radius: 8px;
-          font-size: 0.8rem;
-          color: #fff;
-          background-color: #d4af37;
-          text-transform: capitalize;
-          font-weight: 500;
+        .tarjeta-info {
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          flex-grow: 1;
+
+          h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.4rem;
+            text-align: center;
+          }
+
+          p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+            text-align: justify;
+            flex-grow: 1;
+          }
+
+          .etiqueta {
+            align-self: center;
+            display: inline-block;
+            padding: 0.35rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #fff;
+            background-color: #d4af37;
+            text-transform: capitalize;
+            font-weight: 500;
+          }
         }
       }
     }
   }
 
-  // Responsive
+  /* Animaciones para desplazamiento infinito */
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes scroll-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  /* ===================== Responsive ===================== */
+  @media (max-width: 1024px) {
+    .tarjeta {
+      flex: 0 0 220px !important;
+      height: 320px !important;
+    }
+  }
+
   @media (max-width: 768px) {
     padding: 1.5rem;
 
@@ -115,19 +200,21 @@
       font-size: 1.3rem;
     }
 
-    .tarjetas-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
+    .tarjeta {
+      flex: 0 0 200px !important;
+      height: 300px !important;
     }
   }
 
   @media (max-width: 480px) {
-    .tarjetas-grid {
-      grid-template-columns: 1fr;
+    .tarjeta {
+      flex: 0 0 180px !important;
+      height: 280px !important;
     }
 
     .tarjeta img {
-      height: 130px;
+      height: 130px !important;
     }
   }
 }
+

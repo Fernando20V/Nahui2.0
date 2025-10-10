@@ -2,34 +2,64 @@
 
 @section('content')
 <section class="lugares-container">
-  <div class="buscador">
-    <input type="text" id="searchInput" placeholder="Buscar lugar o categoría..." />
-    <i class="fa fa-search"></i>
-  </div>
+<div class="buscador">
+  <input type="text" id="searchInput" placeholder="Buscar lugar o categoría..." />
+  <span class="icono-buscar"><i class="fa fa-search"></i></span>
+</div>
 
-  @foreach ($grouped as $category => $places)
+
+
+  @foreach ($grouped as $index => $placesByCategory)
+  @php
+    $category = $index;
+    $reverse = $loop->index % 2 !== 0; // alterna dirección
+  @endphp
+
   <div class="categoria-section">
     <h2 class="categoria-titulo">{{ ucfirst($category) }} ></h2>
-    <div class="tarjetas-grid">
-      @foreach ($places as $place)
-      @php
-          $imagenes = $place->imagenes ?? [];
-          $image = count($imagenes)
-              ? (str_starts_with($imagenes[0], 'lugares/')
-                  ? asset($imagenes[0])
-                  : asset('storage/'.$imagenes[0]))
-              : asset('images/default.jpg');
-      @endphp
+    <div class="carrusel-container {{ $reverse ? 'reverse' : '' }}">
+      <div class="carrusel-track">
+        @foreach ($placesByCategory as $place)
+          @php
+              $imagenes = $place->imagenes ?? [];
+              $image = count($imagenes)
+                  ? (str_starts_with($imagenes[0], 'lugares/')
+                      ? asset($imagenes[0])
+                      : asset('storage/'.$imagenes[0]))
+                  : asset('images/default.jpg');
+          @endphp
 
-      <div class="tarjeta" data-name="{{ strtolower($place->name) }}" data-category="{{ strtolower($category) }}">
-        <img src="{{ $image }}" alt="{{ $place->name }}">
-        <div class="tarjeta-info">
-          <h3>{{ $place->name }}</h3>
-          <p>{{ $place->description }}</p>
-          <span class="etiqueta">{{ ucfirst($category) }}</span>
-        </div>
+          <div class="tarjeta" data-name="{{ strtolower($place->name) }}" data-category="{{ strtolower($category) }}">
+            <img src="{{ $image }}" alt="{{ $place->name }}">
+            <div class="tarjeta-info">
+              <h3>{{ $place->name }}</h3>
+              <p>{{ $place->description }}</p>
+              <span class="etiqueta">{{ ucfirst($category) }}</span>
+            </div>
+          </div>
+        @endforeach
+
+        {{-- 🔁 Duplicamos para loop infinito sin salto --}}
+        @foreach ($placesByCategory as $place)
+          @php
+              $imagenes = $place->imagenes ?? [];
+              $image = count($imagenes)
+                  ? (str_starts_with($imagenes[0], 'lugares/')
+                      ? asset($imagenes[0])
+                      : asset('storage/'.$imagenes[0]))
+                  : asset('images/default.jpg');
+          @endphp
+
+          <div class="tarjeta" data-name="{{ strtolower($place->name) }}" data-category="{{ strtolower($category) }}">
+            <img src="{{ $image }}" alt="{{ $place->name }}">
+            <div class="tarjeta-info">
+              <h3>{{ $place->name }}</h3>
+              <p>{{ $place->description }}</p>
+              <span class="etiqueta">{{ ucfirst($category) }}</span>
+            </div>
+          </div>
+        @endforeach
       </div>
-      @endforeach
     </div>
   </div>
   @endforeach

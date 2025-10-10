@@ -18,7 +18,7 @@
         @endif
 
         <!-- Formulario de login -->
-        <form method="POST" action="{{ route('login') }}">
+        <form class="form"  method="POST" action="{{ route('login') }}">
             @csrf
 
             <!-- Usuario/Email -->
