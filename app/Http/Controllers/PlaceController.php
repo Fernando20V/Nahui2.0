@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Place;
 use App\Models\PlaceCategory;
+use App\Models\Department;
+use App\Models\Municipality;
 use App\Http\Requests\PlaceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -17,9 +19,7 @@ class PlaceController extends Controller
      */
     public function index(): View
     {
-        // Traer places con la categoría para evitar N+1 queries
         $places = Place::with('placeCategory')->paginate(10);
-
         return view('places.index', compact('places'));
     }
 
@@ -29,40 +29,48 @@ class PlaceController extends Controller
     public function create(): View
     {
         $categories = PlaceCategory::all();
-        $place = new Place(); // necesario para form.blade
-        return view('places.create', compact('categories', 'place'))
+        $departments = Department::all(); // 🔹 Agregado
+        $municipalities = collect(); // Vacío en create
+        $place = new Place();
+
+        return view('places.create', compact('categories', 'departments', 'municipalities', 'place'))
                ->with('action', route('places.store'));
     }
 
     /**
      * Guardar un nuevo Place
      */
-    public function store(PlaceRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
+public function store(PlaceRequest $request): RedirectResponse
+{
+    $data = $request->validated();
 
-        // Manejo de status (radio buttons)
-        $data['is_public'] = $request->status === 'public';
-        $data['is_managed'] = $request->status === 'managed';
+    // Manejo de status (radio buttons)
+    $data['is_public'] = $request->status === 'public';
+    $data['is_managed'] = $request->status === 'managed';
 
-        // Manejo de imágenes
-        if ($request->hasFile('imagenes')) {
-            $imagenes = [];
-            foreach ($request->file('imagenes') as $file) {
-                $path = $file->store('places', 'public');
-                $imagenes[] = $path;
-            }
-            $data['imagenes'] = $imagenes;
+    // Manejo de imágenes
+    if ($request->hasFile('imagenes')) {
+        $imagenes = [];
+        foreach ($request->file('imagenes') as $file) {
+            $path = $file->store('places', 'public');
+            $imagenes[] = $path;
         }
-
-        // Asignar categoría
-        $data['place_category_id'] = $request->categoria;
-
-        Place::create($data);
-
-        return Redirect::route('places.index')
-            ->with('success', 'Lugar creado con éxito');
+        $data['imagenes'] = $imagenes;
     }
+
+    // Asignar categoría
+    $data['place_category_id'] = $request->categoria;
+
+    // 🔹 Asignar departamento y municipio
+    $data['department_id'] = $request->department_id;
+    $data['municipality_id'] = $request->municipality_id;
+
+    Place::create($data);
+
+    return Redirect::route('places.index')
+        ->with('success', 'Lugar creado con éxito');
+}
+
 
     /**
      * Mostrar el formulario de edición
@@ -71,39 +79,47 @@ class PlaceController extends Controller
     {
         $place = Place::findOrFail($id);
         $categories = PlaceCategory::all();
+        $departments = Department::all();
+        $municipalities = $place->department_id 
+            ? Municipality::where('department_id', $place->department_id)->get() 
+            : collect();
 
-        return view('places.edit', compact('place', 'categories'))
+        return view('places.edit', compact('place', 'categories', 'departments', 'municipalities'))
                ->with('action', route('places.update', $place->id));
     }
 
     /**
      * Actualizar un Place
      */
-    public function update(PlaceRequest $request, $id): RedirectResponse
-    {
-        $place = Place::findOrFail($id);
-        $data = $request->validated();
+public function update(PlaceRequest $request, $id): RedirectResponse
+{
+    $place = Place::findOrFail($id);
+    $data = $request->validated();
 
-        $data['is_public'] = $request->status === 'public';
-        $data['is_managed'] = $request->status === 'managed';
+    $data['is_public'] = $request->status === 'public';
+    $data['is_managed'] = $request->status === 'managed';
 
-        if ($request->hasFile('imagenes')) {
-            $imagenes = [];
-            foreach ($request->file('imagenes') as $file) {
-                $path = $file->store('places', 'public');
-                $imagenes[] = $path;
-            }
-            $data['imagenes'] = $imagenes;
+    if ($request->hasFile('imagenes')) {
+        $imagenes = [];
+        foreach ($request->file('imagenes') as $file) {
+            $path = $file->store('places', 'public');
+            $imagenes[] = $path;
         }
-
-        // Actualizar categoría
-        $data['place_category_id'] = $request->categoria;
-
-        $place->update($data);
-
-        return Redirect::route('places.index')
-            ->with('success', 'Lugar actualizado con éxito');
+        $data['imagenes'] = $imagenes;
     }
+
+    $data['place_category_id'] = $request->categoria;
+
+    // 🔹 Asignar departamento y municipio
+    $data['department_id'] = $request->department_id;
+    $data['municipality_id'] = $request->municipality_id;
+
+    $place->update($data);
+
+    return Redirect::route('places.index')
+        ->with('success', 'Lugar actualizado con éxito');
+}
+
 
     /**
      * Mostrar un Place específico
@@ -111,24 +127,46 @@ class PlaceController extends Controller
     public function show($id): View
     {
         $place = Place::with(['placeCategory', 'address', 'organization'])->findOrFail($id);
-
-        // Asegurar que imagenes siempre sea un array
         $imagenes = is_array($place->imagenes) ? $place->imagenes : [];
 
         return view('places.show', compact('place', 'imagenes'));
     }
 
-/*catalogo de lugares*/
-
+    /**
+     * Catalogo de lugares
+     */
 public function catalog()
 {
-    $places = \App\Models\Place::with('placeCategory')->get();
+    // Cargar todo con relaciones
+    $places = Place::with(['placeCategory', 'department'])->get();
 
-    // Agrupamos por categoría
-    $grouped = $places->groupBy(fn($p) => strtolower($p->placeCategory->name ?? 'otros'));
+    //  Agrupar por categoría
+    $byCategory = $places->groupBy(fn($p) => strtolower($p->placeCategory->name ?? 'otros'));
 
-    return view('places.catalog', compact('grouped'));
+    //  Agrupar por departamento
+    $byDepartment = $places->groupBy(fn($p) => strtolower($p->department->name ?? 'otros'));
+
+    return view('places.catalog', [
+        'byCategory' => $byCategory,
+        'byDepartment' => $byDepartment,
+    ]);
 }
+
+public function reservar(Place $place)
+{
+    // Cargamos relaciones necesarias
+    $place->load(['resenas', 'placeCategory']); //
+
+    // Obtenemos los datos
+    $resenas = $place->resenas ?? [];
+    $imagenes = $place->imagenes ?? []; // 
+    $precio = $place->precio ?? 0;
+
+    return view('places.reservar', compact('place', 'resenas', 'imagenes', 'precio'));
+}
+
+
+
 
 
     /**

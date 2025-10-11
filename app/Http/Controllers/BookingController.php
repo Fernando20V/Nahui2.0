@@ -3,82 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Place;
 use Illuminate\Http\Request;
-use App\Http\Requests\BookingRequest;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar la página de reservar para un place específico
      */
-    public function index(Request $request): View
+    public function reservar(Place $place)
     {
-        $bookings = Booking::paginate();
+        $imagenes = $place->imagenes ?? [];
+        $resenas = $place->resenas ?? [];
+        $precio = $place->accommodation->base_price ?? 0;
 
-        return view('booking.index', compact('bookings'))
-            ->with('i', ($request->input('page', 1) - 1) * $bookings->perPage());
+        return view('places.reservar', compact('place', 'imagenes', 'resenas', 'precio'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Guardar la reserva
      */
-    public function create(): View
-    {
-        $booking = new Booking();
+public function store(Request $request, Place $place)
+{
+    // Validación
+    $request->validate([
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after:start_date',
+        'guests' => 'required|integer|min:1',
+    ]);
 
-        return view('booking.create', compact('booking'));
-    }
+    $startDate = Carbon::parse($request->start_date);
+    $endDate = Carbon::parse($request->end_date);
+    $nights = $startDate->diffInDays($endDate);
+    $totalPrice = ($place->entrance_fee ?? 0) * $nights;
+    $currency = $place->currency ?? 'USD';
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(BookingRequest $request): RedirectResponse
-    {
-        Booking::create($request->validated());
+Booking::create([
+    'user_id' => Auth::id(),
+    // 'place_id' => $place->id,   
+    'accommodation_id' => $place->accommodation->id, // 
+    'start_date' => $startDate->format('Y-m-d'),
+    'end_date' => $endDate->format('Y-m-d'),
+    'guests' => $request->guests,
+    'total_price' => $totalPrice,
+    'currency' => $currency,
+    'status' => 'pending',
+]);
 
-        return Redirect::route('bookings.index')
-            ->with('success', 'Booking created successfully.');
-    }
+    return redirect()->route('places.reservar', $place->id)
+                     ->with('success', '¡Reserva realizada correctamente!');
+}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id): View
-    {
-        $booking = Booking::find($id);
-
-        return view('booking.show', compact('booking'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id): View
-    {
-        $booking = Booking::find($id);
-
-        return view('booking.edit', compact('booking'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(BookingRequest $request, Booking $booking): RedirectResponse
-    {
-        $booking->update($request->validated());
-
-        return Redirect::route('bookings.index')
-            ->with('success', 'Booking updated successfully');
-    }
-
-    public function destroy($id): RedirectResponse
-    {
-        Booking::find($id)->delete();
-
-        return Redirect::route('bookings.index')
-            ->with('success', 'Booking deleted successfully');
-    }
 }
