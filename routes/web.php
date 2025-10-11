@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ProfileController;
@@ -19,8 +20,24 @@ Route::get('/mapa', function () {
 })->middleware(['auth', 'verified'])->name('mapa');
 
 
+use App\Models\Municipality;
+
+Route::get('/municipalities/{department}', function($departmentId) {
+    return Municipality::where('department_id', $departmentId)->get();
+})->name('municipalities.byDepartment');
+
+
+
 Route::get('/catalogo', [App\Http\Controllers\PlaceController::class, 'catalog'])
     ->name('places.catalog');
+
+    // reserva
+
+// Para mostrar el formulario
+Route::get('/places/{place}/reservar', [PlaceController::class, 'reservar'])->name('places.reservar');
+
+// Para procesar la reserva
+Route::post('/places/{place}/reservar', [BookingController::class, 'store'])->name('bookings.store');
 
 
 // rutas crud
