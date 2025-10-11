@@ -32,9 +32,14 @@ class Department extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function municipalities()
-    {
-        return $this->hasMany(\App\Models\Municipality::class, 'id', 'department_id');
-    }
-    
+public function municipalities()
+{
+    return $this->hasMany(\App\Models\Municipality::class, 'department_id', 'id');
+}
+
+public function places()
+{
+    return $this->hasMany(\App\Models\Place::class, 'departament_id', 'id');
+}
+
 }
