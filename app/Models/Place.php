@@ -39,7 +39,9 @@ class Place extends Model
         'currency',
         'imagenes',
         'latitude',
-        'longitude'
+        'longitude',
+            'department_id',
+    'municipality_id', 
     ];
 
     // Relaciones
@@ -73,8 +75,24 @@ class Place extends Model
         return $this->hasOne(Restaurant::class, 'place_id', 'id');
     }
 
-    public function accommodation()
-    {
-        return $this->hasOne(Accommodation::class, 'place_id', 'id');
-    }
+    // public function accommodation()
+    // {
+    //     return $this->hasOne(Accommodation::class, 'place_id', 'id');
+    // }
+
+
+public function department() {
+    return $this->belongsTo(Department::class, 'department_id');
+}
+
+public function municipality() {
+    return $this->belongsTo(Municipality::class, 'municipality_id');
+
+}
+
+public function resenas()
+{
+    return $this->morphMany(Review::class, 'reviewable');
+}
+
 }
