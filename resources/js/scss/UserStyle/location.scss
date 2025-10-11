@@ -163,7 +163,7 @@
 }
 
 /* reserva */
-.reserva-box {
+.con_form {
   display:flex;
   flex-direction: column;
   justify-content : space-evenly;
@@ -174,6 +174,7 @@
   border-radius: 8px;
   margin-bottom: 1.6rem;
   box-shadow: 1px 2px 3px #6b6a6a;
+  
 }
 
 .fechas {
@@ -258,4 +259,74 @@
   .comentarios-grid { grid-template-columns: 1fr; }
   .reserva-box { flex-direction: column; align-items:flex-start; gap:10px; }
   .total { width:100%; text-align:left; }
+}
+
+/* -------------------- CARACTERÍSTICAS -------------------- */
+.caracteristicas-box {
+    background-color: #fff9f3; /* suave y cálido */
+    border: 1px solid #f0e0d6;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.caracteristicas-box h4 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: #d98c3f; /* tono dorado */
+}
+
+.caracteristicas-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.caracteristicas-box ul li {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.caracteristicas-box ul li strong {
+    color: #d98c3f;
+}
+
+/* -------------------- REGLAS / CONSIDERACIONES -------------------- */
+.reglas-box {
+    background-color: #fefefe;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+
+.reglas-box h4 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: #d98c3f;
+}
+
+.reglas-box p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 768px) {
+    .caracteristicas-box, .reglas-box {
+        padding: 16px;
+        margin: 16px 0;
+    }
+
+    .caracteristicas-box h4, .reglas-box h4 {
+        font-size: 1.2rem;
+    }
+
+    .caracteristicas-box ul li, .reglas-box p {
+        font-size: 0.95rem;
+    }
 }

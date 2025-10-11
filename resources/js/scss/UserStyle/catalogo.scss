@@ -3,6 +3,16 @@
   background-color: #fffdf6;
   font-family: 'Poppins', sans-serif;
 
+  .departamento-titulo {
+  font-size: 2rem;
+  color: #b8860b;
+  margin: 2rem 0 1rem 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 5px;
+}
+
 //   buscador
 .buscador {
   position: relative;
