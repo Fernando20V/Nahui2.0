@@ -60,6 +60,31 @@
             <input type="number" name="capacidad" value="{{ old('capacidad', $place->capacidad ?? '') }}"
                 placeholder="Capacidad de personas">
         </div>
+
+<!-- Departamento -->
+<select name="department_id" id="department-select" class="form-control">
+    <option value="">Seleccione un departamento</option>
+    @foreach($departments as $department)
+        <option value="{{ $department->id }}"
+            {{ old('department_id', $place->department_id) == $department->id ? 'selected' : '' }}>
+            {{ $department->name }}
+        </option>
+    @endforeach
+</select>
+
+<!-- Municipio -->
+<select name="municipality_id" id="municipality-select" class="form-control">
+    <option value="">Seleccione un municipio</option>
+    @foreach($municipalities as $municipality)
+        <option value="{{ $municipality->id }}"
+            {{ old('municipality_id', $place->municipality_id) == $municipality->id ? 'selected' : '' }}>
+            {{ $municipality->name }}
+        </option>
+    @endforeach
+</select>
+
+
+
     </div>
 
     <!-- Reglas -->
@@ -142,6 +167,34 @@
         <button type="submit" class="btn btn-publicar">Guardar</button>
     </div>
 </form>
+
+@push('scripts')
+
+
+<script>
+document.getElementById('department-select').addEventListener('change', function() {
+    const departmentId = this.value;
+    const municipalitySelect = document.getElementById('municipality-select');
+
+    // Limpiar opciones previas
+    municipalitySelect.innerHTML = '<option value="">Seleccione un municipio</option>';
+
+    if (!departmentId) return;
+
+    fetch(`/municipalities/${departmentId}`)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m.id;
+                option.textContent = m.name;
+                municipalitySelect.appendChild(option);
+            });
+        });
+});
+</script>
+@endpush
+
 
 @push('scripts')
 <script>
