@@ -65,4 +65,9 @@ class Municipality extends Model
         return $this->hasMany(\App\Models\Stop::class, 'id', 'municipality_id');
     }
     
+    
+    public function places()
+    {
+        return $this->hasMany(\App\Models\Place::class, 'municipality_id', 'id');
+    }
 }
