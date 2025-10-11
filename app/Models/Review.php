@@ -62,5 +62,10 @@ class Review extends Model
     {
         return $this->hasMany(\App\Models\ReviewLike::class, 'id', 'review_id');
     }
+    public function reviewable()
+{
+    return $this->morphTo();
+}
+
     
 }
