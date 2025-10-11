@@ -33,11 +33,12 @@ class PlaceRequest extends FormRequest
             'promocion' => 'nullable|string|max:255',
             'is_public' => 'nullable|boolean',
             'is_managed' => 'nullable|boolean',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120', // max 5MB por imagen
-
-            // 🔹 Campos nuevos para coordenadas
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120', // 
             'longitude' => 'nullable|numeric|between:-180,180',
             'latitude'  => 'nullable|numeric|between:-90,90',
+
+    'department_id' => 'required|exists:departments,id',
+        'municipality_id' => 'required|exists:municipalities,id',
         ];
     }
 
@@ -106,6 +107,11 @@ class PlaceRequest extends FormRequest
             'imagenes.*.image' => 'Cada archivo debe ser una imagen válida.',
             'imagenes.*.mimes' => 'Solo se permiten imágenes JPG, JPEG, PNG, GIF o WEBP.',
             'imagenes.*.max' => 'Cada imagen no puede superar los 5MB.',
+
+            'departament_id.required' => 'El departamento es obligatorio.',
+            'departament_id.exists' => 'El departamento seleccionado no es válido.',
+            'municipality_id.required' => 'El municipio es obligatorio.',
+            'municipality_id.exists' => 'El municipio seleccionado no es válido.',
         ];
     }
 }
